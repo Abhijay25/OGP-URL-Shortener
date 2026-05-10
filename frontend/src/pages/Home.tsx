@@ -41,7 +41,7 @@ export default function Home({ onShorten, history }: Props) {
             const body: { url: string; customAlias?: string } = { url };
             if (alias.trim()) body.customAlias = alias.trim();
 
-            const res = await fetch(`${import.meta.env.VITE_API_URL}/shorten`, {
+            const res = await fetch(`${import.meta.env.VITE_EXPRESS_URL}/shorten`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(body),
@@ -133,7 +133,7 @@ export default function Home({ onShorten, history }: Props) {
                         </label>
                         <div className="flex items-center rounded-lg border border-gray-300 overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500 focus-within:border-transparent transition">
                             <span className="px-3.5 py-2.5 text-sm text-gray-400 bg-gray-50 border-r border-gray-300 select-none whitespace-nowrap">
-                                {import.meta.env.VITE_API_URL.replace('http://', '').replace('https://', '')}/
+                                {import.meta.env.VITE_EXPRESS_URL.replace('http://', '').replace('https://', '')}/
                             </span>
                             <input
                                 id="alias"
