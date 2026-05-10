@@ -51,6 +51,10 @@ app.get('/:shortCode', async (req, res) => {
     res.redirect(302, originalUrl);
 });
 
-app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-});
+export { app };
+
+if (process.env['NODE_ENV'] !== 'test') {
+    app.listen(PORT, () => {
+        console.log(`Server running on http://localhost:${PORT}`);
+    });
+}
