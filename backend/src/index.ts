@@ -4,8 +4,10 @@ import { shortenUrl, resolveUrl, getAllUrls } from './urlShortener';
 
 const app = express();
 const PORT = 3000;
+const BASE_URL = process.env['BASE_URL'] ?? `http://localhost:${PORT}`;
+const FRONTEND_URL = process.env['FRONTEND_URL'] ?? 'http://localhost:5173';
 
-app.use(cors({ origin: 'http://localhost:5173' }));
+app.use(cors({ origin: FRONTEND_URL }));
 app.use(express.json());
 
 app.get('/health', (_req, res) => {
@@ -18,7 +20,7 @@ app.get('/history', async (_req, res) => {
         res.json({
             urls: urls.map((u: { shortCode: string; originalUrl: string; createdAt: Date }) => ({
                 shortCode: u.shortCode,
-                shortUrl: `http://localhost:${PORT}/${u.shortCode}`,
+                shortUrl: `${BASE_URL}/${u.shortCode}`,
                 originalUrl: u.originalUrl,
                 createdAt: u.createdAt.toISOString(),
             })),
@@ -33,7 +35,7 @@ app.post('/shorten', async (req, res) => {
 
     try {
         const code = await shortenUrl(url, customAlias);
-        res.json({ shortUrl: `http://localhost:${PORT}/${code}` });
+        res.json({ shortUrl: `${BASE_URL}/${code}` });
     } catch (err) {
         res.status(400).json({ error: (err as Error).message });
     }
