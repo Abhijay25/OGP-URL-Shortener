@@ -67,7 +67,7 @@ export default function Home({ onShorten, history }: Props) {
             setUrl('');
             setAlias('');
         } catch {
-            setError('Could not reach the server. Is the backend running?');
+            setError('Something went wrong. Please try again.');
         } finally {
             setLoading(false);
         }
