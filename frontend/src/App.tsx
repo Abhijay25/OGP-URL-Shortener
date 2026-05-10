@@ -9,7 +9,7 @@ export default function App() {
     const [history, setHistory] = useState<UrlEntry[]>([]);
 
     useEffect(() => {
-        fetch('http://localhost:3000/history')
+        fetch(`${import.meta.env.VITE_API_URL}/history`)
             .then((r) => r.json() as Promise<{ urls: UrlEntry[] }>)
             .then((data) => setHistory(data.urls))
             .catch(() => {});
