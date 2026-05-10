@@ -2,6 +2,8 @@
 
 A URL shortener built with Express, React, and PostgreSQL.
 
+**Live:** [https://ogp-url-shortener.vercel.app](https://ogp-url-shortener.vercel.app)
+
 ## Stack
 
 | Layer    | Technology                     |
@@ -18,7 +20,7 @@ A URL shortener built with Express, React, and PostgreSQL.
 
 > **NixOS users:** the backend must run inside `nix-shell` for Prisma's schema engine to work. `run.sh` handles this automatically.
 
-## Setup
+## Local Setup
 
 ### 1. Install dependencies
 
@@ -28,7 +30,7 @@ cd ../frontend && yarn install
 cd ..
 ```
 
-### 2. Configure the database URL
+### 2. Configure environment variables
 
 Create `backend/.env`:
 
@@ -36,9 +38,15 @@ Create `backend/.env`:
 DATABASE_URL="postgresql://snip:snip@localhost:5432/snipsnip?schema=public"
 ```
 
+Create `frontend/.env`:
+
+```
+VITE_EXPRESS_URL=http://localhost:3000
+```
+
 ### 3. Run the database migration
 
-This creates the `Url` table in Postgres. The database container must be running first:
+The database container must be running first:
 
 ```bash
 docker run --name snipsnip-db \
@@ -81,11 +89,32 @@ Open [http://localhost:5173](http://localhost:5173).
 | GET    | `/:shortCode` | —                           | 302 redirect or 404             |
 | GET    | `/history`    | —                           | `{ urls: [...] }`               |
 
+## Tests
+
+```bash
+cd backend && yarn test
+```
+
+Requires the Postgres container to be running. Tests wipe the `Url` table before each run.
+
 ## Deployment
 
-This project is configured for local development. To deploy:
+Deployed on [Render](https://render.com) (backend + PostgreSQL) and [Vercel](https://vercel.com) (frontend).
 
-1. Provision a PostgreSQL instance and update `DATABASE_URL` in your environment.
-2. Build the frontend: `cd frontend && yarn build` 
-3. Run the backend on a server: set `NODE_ENV=production` and start with `node dist/index.js` (after `yarn build` in the backend).
-4. Update the hardcoded `http://localhost:3000` references in the frontend to your backend's public URL before building.
+### Backend (Render)
+
+1. Create a **PostgreSQL** instance on Render (free tier)
+2. Create a **Web Service**, set Root Directory to `backend`
+3. Set Build Command: `yarn && yarn prisma generate && yarn build`
+4. Set Start Command: `yarn prisma migrate deploy && yarn start`
+5. Add environment variables:
+   - `DATABASE_URL` — Internal Database URL from the Postgres instance
+   - `BASE_URL` — public URL of the web service (e.g. `https://your-app.onrender.com`)
+   - `FRONTEND_URL` — public URL of the frontend (e.g. `https://your-app.vercel.app`)
+
+### Frontend (Vercel)
+
+1. Import the repo, set Root Directory to `frontend`
+2. Add environment variable:
+   - `VITE_EXPRESS_URL` — public URL of the backend (e.g. `https://your-app.onrender.com`)
+3. Deploy
