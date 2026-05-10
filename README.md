@@ -86,6 +86,6 @@ Open [http://localhost:5173](http://localhost:5173).
 This project is configured for local development. To deploy:
 
 1. Provision a PostgreSQL instance and update `DATABASE_URL` in your environment.
-2. Build the frontend: `cd frontend && yarn build` — serve the `dist/` folder via a static host (e.g. Nginx, Vercel).
+2. Build the frontend: `cd frontend && yarn build` 
 3. Run the backend on a server: set `NODE_ENV=production` and start with `node dist/index.js` (after `yarn build` in the backend).
 4. Update the hardcoded `http://localhost:3000` references in the frontend to your backend's public URL before building.
