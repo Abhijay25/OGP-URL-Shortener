@@ -118,3 +118,13 @@ Deployed on [Render](https://render.com) (backend + PostgreSQL) and [Vercel](htt
 2. Add environment variable:
    - `VITE_EXPRESS_URL` — public URL of the backend (e.g. `https://your-app.onrender.com`)
 3. Deploy
+
+## Potential Improvements
+
+- **Click tracking** — count redirects per short URL and display in the history table
+- **URL expiry** — allow users to set a TTL on a link
+- **Delete links** — remove entries from the history page
+- **Rate limiting** — prevent abuse of the `/shorten` endpoint
+- **Pagination** — `/history` currently fetches all rows; would need limiting at scale
+- **Startup env validation** — fail fast on boot if required environment variables are missing
+- **Structured logging** — replace `console.log` with a logger like Pino for searchable logs
